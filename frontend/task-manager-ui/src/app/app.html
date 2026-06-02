@@ -1,0 +1,88 @@
+<div class="task-container">
+  <h2>Project Task Manager</h2>
+  
+  <div class="input-group">
+    <div class="input-controls">
+      <input 
+        [(ngModel)]="newTaskTitle" 
+        placeholder="Enter task title..." 
+        class="task-input"
+      />
+      <select [(ngModel)]="selectedPriority" class="priority-select">
+        <option *ngFor="let priority of priorities" [ngValue]="priority">
+          {{ priority }}
+        </option>
+      </select>
+    </div>
+    <button (click)="addTask()" class="btn-add">Add Task</button>
+  </div>
+
+  <div class="stats-panel">
+    <span><strong>Total Tasks:</strong> {{ totalTasks() }}</span>
+    <span style="margin-left: 15px;"><strong>Completed:</strong> {{ completedCount() }}</span>
+  </div>
+
+  <ul class="task-list">
+    <li *ngFor="let task of tasks()" class="task-item">
+      <div class="task-content" *ngIf="editingTaskId !== task.id; else editTaskBlock">
+        <input 
+          type="checkbox" 
+          [checked]="task.isCompleted" 
+          (change)="toggleComplete(task)" 
+          class="task-checkbox" 
+        />
+        <span [class.completed-text]="task.isCompleted" class="task-text">
+          {{ task.title }}
+        </span>
+        <span class="priority-badge" [ngClass]="getPriorityClass(task.priority)">
+          {{ task.priority }}
+        </span>
+      </div>
+      <ng-template #editTaskBlock>
+        <div class="task-edit-content">
+          <input
+            [(ngModel)]="editTaskTitle"
+            class="task-input edit-input"
+            placeholder="Update task title..."
+          />
+          <select [(ngModel)]="editTaskPriority" class="priority-select edit-select">
+            <option *ngFor="let priority of priorities" [ngValue]="priority">
+              {{ priority }}
+            </option>
+          </select>
+        </div>
+      </ng-template>
+
+      <div class="task-actions">
+        <button
+          *ngIf="editingTaskId !== task.id"
+          (click)="startEdit(task)"
+          class="btn-edit"
+        >
+          Edit
+        </button>
+        <button
+          *ngIf="editingTaskId === task.id"
+          (click)="saveEdit(task)"
+          class="btn-edit-save"
+        >
+          Save
+        </button>
+        <button
+          *ngIf="editingTaskId === task.id"
+          (click)="cancelEdit()"
+          class="btn-edit-cancel"
+        >
+          Cancel
+        </button>
+        <button
+          *ngIf="editingTaskId !== task.id"
+          (click)="deleteTask(task.id!)"
+          class="btn-delete"
+        >
+          Delete
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>
