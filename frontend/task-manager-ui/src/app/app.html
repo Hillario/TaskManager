@@ -13,6 +13,11 @@
           {{ priority }}
         </option>
       </select>
+      <input
+        type="date"
+        [(ngModel)]="selectedCompletionDate"
+        class="completion-date-input"
+      />
     </div>
     <button (click)="addTask()" class="btn-add">Add Task</button>
   </div>
@@ -36,6 +41,9 @@
         </span>
         <span class="priority-badge" [ngClass]="getPriorityClass(task.priority)">
           {{ task.priority }}
+        </span>
+        <span class="completion-date-badge" *ngIf="task.completionDate">
+          Due: {{ task.completionDate }}
         </span>
       </div>
       <ng-template #editTaskBlock>
