@@ -54,6 +54,7 @@ app.MapPut("/api/tasks/{id}", async (int id, ProjectTask inputTask, AppDbContext
     task.Title = inputTask.Title;
     task.IsCompleted = inputTask.IsCompleted;
     task.Priority = inputTask.Priority;
+    task.CompletionDate = inputTask.CompletionDate;
 
     await db.SaveChangesAsync();
     return Results.NoContent();
@@ -79,6 +80,7 @@ public class ProjectTask
     public string Title { get; set; } = string.Empty;
     public bool IsCompleted { get; set; }
     public TaskPriority Priority { get; set; } = TaskPriority.Medium;
+    public DateOnly? CompletionDate { get; set; }
 }
 
 public enum TaskPriority

@@ -8,6 +8,7 @@ export interface ProjectTask {
   title: string;
   isCompleted: boolean;
   priority: TaskPriority;
+  completionDate?: string | null;
 }
 
 export type TaskPriority = 'Low' | 'Medium' | 'High';
