@@ -17,6 +17,7 @@ export class App implements OnInit {
   tasks = signal<ProjectTask[]>([]);
   newTaskTitle = '';
   selectedPriority: TaskPriority = 'Medium';
+  selectedCompletionDate = '';
   editingTaskId: number | null = null;
   editTaskTitle = '';
   editTaskPriority: TaskPriority = 'Medium';
@@ -43,17 +44,19 @@ export class App implements OnInit {
   }
 
   addTask() {
-    if (!this.newTaskTitle.trim()) return;
+    if (!this.newTaskTitle.trim() || !this.selectedCompletionDate) return;
 
     const newTask: ProjectTask = {
       title: this.newTaskTitle,
       isCompleted: false,
-      priority: this.selectedPriority
+      priority: this.selectedPriority,
+      completionDate: this.selectedCompletionDate
     };
     this.taskService.createTask(newTask).subscribe(savedTask => {
       this.tasks.update(currentTasks => [...currentTasks, savedTask]);
       this.newTaskTitle = '';
       this.selectedPriority = 'Medium';
+      this.selectedCompletionDate = '';
     });
   }
 
